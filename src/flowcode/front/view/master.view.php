@@ -26,7 +26,7 @@
         <div id="header">
             <div class="container">
                 <div id="blogTitle">
-                    <span><h1>Wing CMS</h1></span>
+                    <span><h1>Wing Modules Demo</h1></span>
                 </div>
                 <div class="navbar">
                     <div class="navbar-inner">

@@ -2,7 +2,7 @@
 
 $setup = array(
     "site" => array(
-        "name" => "Wing CMS",
+        "name" => "Wing Modules Demo",
     ),
     "masterview" => array(
         "module" => "front/view/master",

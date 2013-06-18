@@ -1,86 +1,77 @@
 <?php
 
-require('../kernel/Autoloader.class.php');
+namespace flowcode\wing\generator;
+
+use flowcode\orm\builder\MapperBuilder;
+
+require_once (__DIR__ . '/../mvc/Autoloader.php');
 
 if (count($argv) < 2) {
     fwrite(STDOUT, "Ingrese el nombre de la entidad, ejemplo: noticia \n");
     die();
 }
 
-$clase = $argv[1];
-
-$entidadNombreCompleto = "\\flowcode\\inter\\domain\\" . ucfirst($clase);
-$objeto = new $entidadNombreCompleto();
-
-$classNameLength = strlen(get_class($objeto));
-$array = (array) $objeto;
-
-// dao
-$fp = fopen("../../inter/dao/" . ucfirst($clase) . "Dao.class.php", "w+");
-if ($fp == false) {
-    die("No se ha podido crear el archivo.");
+$name = $argv[2];
+$module = $argv[1];
+fwrite(STDOUT, "Creando estructura de directorios para el modulo: $module \n");
+if (FSHelper::buildModuleStructure($module)) {
+    fwrite(STDOUT, "Estructura de directorios creada. \n");
+} else {
+    fwrite(STDOUT, "No fue posible crear los directorios. \n");
+    die();
 }
 
-// inicializar el archivo y la clase
-$inicializar = '<?php' . "\n";
-$inicializar .= 'namespace flowcode\inter\dao;' . "\n";
-$inicializar .= 'use flowcode\mvc\kernel\DataSource;' . "\n";
-$inicializar .= 'use flowcode\inter\domain\\' . ucfirst($clase) . ';' . "\n";
-$inicializar .= 'class ' . ucfirst($clase) . 'Dao {' . "\n";
-$inicializar .= ' private $dataSource;' . "\n";
-$inicializar .= '    public function __construct() {' . "\n";
-$inicializar .= '        $this->dataSource = new DataSource();' . "\n";
-$inicializar .= '    }' . "\n";
-fwrite($fp, $inicializar);
+fwrite(STDOUT, "Obteniendo mapper para: $name \n");
 
+/* obtengo el mapper */
+$mappingFilePath = dirname(__FILE__) . "/../../../../orm-mapping.xml";
+$mapping = simplexml_load_file($mappingFilePath);
+$mapper = MapperBuilder::buildFromName($mapping, $name);
 
-// Obtener por id
-$obtenerPorId = 'function obtener' . ucfirst($clase) . 'PorId($id) {' . "\n";
-$obtenerPorId .= 'try {' . "\n";
-$obtenerPorId .= '    $query = "SELECT * FROM ' . $clase . ' ";' . "\n";
-$obtenerPorId .= '    $query .= "WHERE id = $id ";' . "\n";
-$obtenerPorId .= '   $' . $clase . ' = null;' . "\n";
-$obtenerPorId .= '$lista = $this->dataSource->executeQuery($query);' . "\n";
-$obtenerPorId .= 'if ($lista) {';
-$obtenerPorId .= '$' . $clase . ' = new ' . ucfirst($clase) . '();' . "\n";
-foreach ($array as $key => $value) {
-    $atributo = trim(substr($key, $classNameLength + 1));
-    $obtenerPorId .= '                $' . $clase . '->set' . ucfirst($atributo) . '($lista[0]["' . $atributo . '"]);' . "\n";
-}
-$obtenerPorId .= '            }' . "\n";
-$obtenerPorId .= '            return $' . $clase . ';' . "\n";
-$obtenerPorId .= '        } catch (\Exception $pEx) {' . "\n";
-$obtenerPorId .= '            throw new EntityDaoException("No se pude obtener la entidad en funcion del id.  SQLError: " . $pEx->getMessage());' . "\n";
-$obtenerPorId .= '        }' . "\n";
-$obtenerPorId .= '    }' . "\n";
-fwrite($fp, $obtenerPorId);
+fwrite(STDOUT, "Mapper obtenido. \n");
 
+fwrite(STDOUT, "Generando archivos... \n");
+/* construyo el dao */
+$fileDaoLocation = __DIR__ . "/../../$module/dao/" . ucfirst($mapper->getName()) . "Dao.php";
+$fileDaoString = StringFileBuilder::getDaoFileString($mapper, $module);
+fwrite(STDOUT, "Generado: $fileDaoLocation \n");
 
-// Obtener entidades todas
-$obtenerTodas = 'function obtener' . ucfirst($clase) . 's() {' . "\n";
-$obtenerTodas .= '        try {' . "\n";
-$obtenerTodas .= '            $query = "SELECT * FROM ' . $clase . ' ";' . "\n";
-$obtenerTodas .= '            $lista = $this->dataSource->executeQuery($query);' . "\n";
-$obtenerTodas .= '            if ($lista) {' . "\n";
-$obtenerTodas .= '                foreach ($lista as $fila) {' . "\n";
-$obtenerTodas .= '                    $' . $clase . ' = new ' . ucfirst($clase) . '();' . "\n";
-foreach ($array as $key => $value) {
-    $atributo = trim(substr($key, $classNameLength + 1));
-    $obtenerTodas .= '                $' . $clase . '->set' . ucfirst($atributo) . '($lista["' . $atributo . '"]);' . "\n";
-}
-$obtenerTodas .= '                }' . "\n";
-$obtenerTodas .= '            }' . "\n";
-$obtenerTodas .= '        } catch (\Exception $pEx) {' . "\n";
-$obtenerTodas .= '            throw new EntityDaoException("No se pude obtener las entidades.  SQLError: " . $pEx->getMessage());' . "\n";
-$obtenerTodas .= '        }' . "\n";
-$obtenerTodas .= '    }' . "\n";
-fwrite($fp, $obtenerTodas);
+FSHelper::writeToFile($fileDaoLocation, $fileDaoString);
 
+/* construyo el service */
+$fileServiceLocation = __DIR__ . "/../../$module/service/" . ucfirst($mapper->getName()) . "Service.php";
+$serviceFileString = StringFileBuilder::getServiceFileString($mapper, $module);
 
-// Fin del archivo
-$finalizar = "}";
-fwrite($fp, $finalizar);
+fwrite(STDOUT, "Generado: $fileServiceLocation \n");
+FSHelper::writeToFile($fileServiceLocation, $serviceFileString);
 
+/* construyo el adminController */
+$fileAdminControllerLocation = __DIR__ . "/../../$module/controller/Admin" . ucfirst($mapper->getName()) . "Controller.php";
+$adminControllerFileString = StringFileBuilder::getAdminControllerFileString($mapper, $module);
 
-fclose($fp);
+fwrite(STDOUT, "Generado: $fileAdminControllerLocation \n");
+FSHelper::writeToFile($fileAdminControllerLocation, $adminControllerFileString);
+
+/* construyo la entidad de dominio */
+$fileDomainLocation = __DIR__ . "/../../$module/domain/" . ucfirst($mapper->getName()) . ".php";
+$domainFileString = StringFileBuilder::getDomainFileString($mapper, $module);
+
+fwrite(STDOUT, "Generado: $fileDomainLocation \n");
+FSHelper::writeToFile($fileDomainLocation, $domainFileString);
+
+/* construyo la vista del formulario de la entidad */
+$fileFormViewLocation = __DIR__ . "/../../$module/view/admin/" . $mapper->getName() . "Form.view.php";
+$viewFormFileString = StringViewFileBuilder::getDomainForm($mapper, $module);
+
+fwrite(STDOUT, "Generado: $fileFormViewLocation \n");
+FSHelper::writeToFile($fileFormViewLocation, $viewFormFileString);
+
+/* construyo la vista de lista de la entidad */
+$listViewFileLocation = __DIR__ . "/../../$module/view/admin/" . $mapper->getName() . "List.view.php";
+$listViewFileString = StringViewFileBuilder::getDomainList($mapper, $module);
+
+fwrite(STDOUT, "Generado: $listViewFileLocation \n");
+FSHelper::writeToFile($listViewFileLocation, $listViewFileString);
+
+fwrite(STDOUT, "Proceso terminado con exito :) \n");
 ?>

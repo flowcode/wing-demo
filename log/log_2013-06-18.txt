@@ -1,0 +1,11 @@
+2013-06-18 13:33:28 - CRIT --> Call to a member function getItemsPerPage() on a non-object on /var/www/wing-demo/src/flowcode/orm/EntityManager.php at 295
+2013-06-18 13:39:43 - CRIT --> Call to a member function render() on a non-object on /var/www/wing-demo/src/flowcode/wing/mvc/Kernel.php at 87
+2013-06-18 13:39:51 - CRIT --> Call to a member function render() on a non-object on /var/www/wing-demo/src/flowcode/wing/mvc/Kernel.php at 87
+2013-06-18 14:11:38 - CRIT --> Cannot call constructor on /var/www/wing-demo/src/flowcode/front/controller/ProductController.php at 16
+2013-06-18 14:12:41 - CRIT --> Call to a member function findByFilter() on a non-object on /var/www/wing-demo/src/flowcode/front/controller/ProductController.php at 25
+2013-06-18 14:13:28 - CRIT --> Call to a member function getName() on a non-object on /var/www/wing-demo/src/flowcode/front/view/master.view.php at 6
+2013-06-18 14:18:42 - CRIT --> Object of class flowcode\cms\domain\Page could not be converted to string on /var/www/wing-demo/src/flowcode/front/view/product/productList.view.php at 47
+2013-06-18 14:27:41 - CRIT --> Call to undefined method flowcode\shop\domain\ProductCategory::getPath() on /var/www/wing-demo/src/flowcode/shop/view/admin/productForm.view.php at 98
+2013-06-18 14:31:32 - CRIT --> Call to undefined method flowcode\shop\domain\ProductCategory::getPath() on /var/www/wing-demo/src/flowcode/shop/view/admin/productForm.view.php at 98
+2013-06-18 14:31:34 - CRIT --> Call to undefined method flowcode\shop\domain\ProductCategory::getPath() on /var/www/wing-demo/src/flowcode/shop/view/admin/productForm.view.php at 98
+2013-06-18 14:44:55 - CRIT --> Call to undefined method flowcode\orm\domain\Collection::getCurrent() on /var/www/wing-demo/src/flowcode/front/view/product/productList.view.php at 27
