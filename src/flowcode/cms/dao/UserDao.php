@@ -34,7 +34,7 @@ class UserDao {
     public function getUserByUsernamePassword($username, $password) {
         $user = null;
         $em = EntityManager::getInstance();
-        $filter = "username = '" . $username . "' AND password = '" . $password . "'";
+        $filter = "username = '" . mysql_real_escape_string($username) . "' AND password = '" . mysql_real_escape_string($password) . "'";
         $users = $em->findByWhereFilter("user", $filter);
 
         if ($users->count() > 0) {
@@ -208,7 +208,7 @@ class UserDao {
         $em = EntityManager::getInstance();
         return $em->findRelation($user, "Roles");
     }
-    
+
     public function findByFilter($filter = null, $page = 1) {
         $em = EntityManager::getInstance();
         $pager = $em->findByGenericFilter("user", $filter, $page);

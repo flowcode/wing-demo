@@ -228,7 +228,7 @@ class EntityManager {
         $query = "SELECT * FROM `" . $mapper->getTable() . "` ";
         $query .= "WHERE 1 ";
         if (!is_null($filter)) {
-            $query .= "AND $filter ";
+            $query .= "AND " . $filter;
         }
 
         if (!is_null($orderColumn)) {
