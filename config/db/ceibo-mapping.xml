@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<orm-mapping>
+
+    <!-- CMS entities -->
+    <entity name="page" class="flowcode\aire\domain\Page" table="page" >
+        
+        <property name="Id" column="id"/>
+        <property name="Permalink" column="permalink"/>
+        <property name="Name" column="name"/>
+        <property name="Description" column="description"/>
+        <property name="HtmlContent" column="htmlcontent"/>
+        <property name="Status" column="status"/>
+        <property name="Type" column="type"/>
+        
+        <filter name="generic" columns="name,description" perPage="10" />
+    </entity>
+    
+    <entity name="user" class="flowcode\aire\domain\User" table="user" >
+        <property name="Id" column="id"/>
+        <property name="Name" column="name"/>
+        <property name="Username" column="username"/>
+        <property name="Password" column="password"/>
+        <property name="Mail" column="mail"/>
+        
+        <relation entity="role" 
+                  name="Roles" 
+                  table="user_role" 
+                  localColumn="id_user" 
+                  foreignColumn="id_role" 
+                  cardinality="many-to-many" />
+        
+        <filter name="generic" columns="username,name" perPage="10" />
+        
+    </entity>
+    
+    <entity name="role" class="flowcode\aire\domain\Role" table="role" >
+        <property name="Id" column="id"/>
+        <property name="Name" column="name"/>
+        
+        <relation entity="permission" 
+                  name="Permissions" 
+                  table="role_permission" 
+                  localColumn="id_role" 
+                  foreignColumn="id_permission" 
+                  cardinality="many-to-many" />
+        <filter name="generic" columns="name" perPage="20" />
+    </entity>
+    
+    <entity name="permission" class="flowcode\aire\domain\Permission" table="permission" >
+        <property name="Id" column="id"/>
+        <property name="Name" column="name"/>
+        <filter name="generic" columns="name,description" perPage="10" />
+    </entity>
+    
+    <entity name="menu" class="flowcode\aire\domain\Menu" table="menu" >
+        <property name="Id" column="id"/>
+        <property name="Name" column="name"/>
+        
+        <relation entity="itemmenu" 
+                  name="Items" 
+                  table="menu_item_menu" 
+                  localColumn="id_menu" 
+                  foreignColumn="id_item_menu" 
+                  cardinality="many-to-many" />
+        
+    </entity>
+    
+    <entity name="itemmenu" class="flowcode\aire\domain\ItemMenu" table="item_menu" >
+        <property name="Id" column="id"/>
+        <property name="Name" column="name"/>
+        <property name="MenuId" column="id_menu"/>
+        <property name="FatherId" column="id_father"/>
+        <property name="PageId" column="id_page"/>
+        <property name="LinkUrl" column="linkurl"/>
+        <property name="LinkTarget" column="linktarget"/>
+        <property name="order" column="order"/>
+    </entity>
+                
+    <!-- BLOG entities -->
+    <entity name="post" class="flowcode\aire\domain\Post" table="post" >
+        <property name="Id" column="id" type="bigint" />
+        <property name="Permalink" column="permalink" type="varchar"/>
+        <property name="Title" column="title" type="varchar"/>
+        <property name="Description" column="description" type="varchar"/>
+        <property name="Body" column="body" type="varchar"/>
+        <property name="Intro" column="intro" type="varchar"/>
+        <property name="Type" column="type" type="varchar"/>
+        <property name="Status" column="status" type="integer"/>
+        <property name="Date" column="date" type="datetime"/>
+        <relation entity="tag" 
+                  name="Tags" 
+                  table="post_tag" 
+                  localColumn="id_post" 
+                  foreignColumn="id_tag" 
+                  cardinality="many-to-many" />
+        <filter name="generic" columns="title,body,intro" perPage="10" />
+    </entity>
+    
+    <entity name="tag" class="flowcode\aire\domain\Tag" table="tag" >
+        <property name="Id" column="id" type="bigint"/>
+        <property name="Name" column="name" type="varchar"/>
+        <filter name="generic" columns="name" perPage="10" />
+    </entity>
+    
+    <!-- SHOP -->
+    <entity name="product" class="flowcode\aire\domain\Product" table="product" >
+        
+        <property name="Id" column="id"/>
+        <property name="Name" column="name"/>
+        <property name="Description" column="description"/>
+        <property name="Status" column="status"/>
+        
+        <relation entity="productCategory" 
+                  name="Categorys" 
+                  table="product_product_category" 
+                  localColumn="id_product" 
+                  foreignColumn="id_product_category" 
+                  cardinality="many-to-many" />
+        
+        <relation entity="productImage" 
+                  name="Images" 
+                  table="product_product_image" 
+                  localColumn="id_product" 
+                  foreignColumn="id_product_image" 
+                  cardinality="many-to-many" />
+        
+        <filter name="generic" columns="name,description" perPage="10" />
+    </entity>
+    
+    <entity name="productCategory" class="flowcode\aire\domain\ProductCategory" table="product_category" >
+        
+        <property name="Id" column="id"/>
+        <property name="Name" column="name"/>
+        <property name="Description" column="description"/>
+        
+        <relation entity="product" 
+                  name="Products" 
+                  table="product_product_category" 
+                  localColumn="id_product_category" 
+                  foreignColumn="id_product" 
+                  cardinality="many-to-many" />
+        
+        <filter name="generic" columns="name" perPage="10" />
+    </entity>
+    
+    <entity name="productImage" class="flowcode\aire\domain\ProductImage" table="product_image" >
+        <property name="Id" column="id"/>
+        <property name="Name" column="name"/>
+        <property name="Description" column="description"/>
+        <property name="Path" column="path"/>
+        
+        <filter name="generic" columns="name" perPage="10" />
+    </entity>
+    
+</orm-mapping>
