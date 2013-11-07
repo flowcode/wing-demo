@@ -6,7 +6,7 @@
 <div class="row well well-lg col-md-4 col-md-offset-4">
 
     <center>
-        <img class="img-rounded" src="/images/logo-aire.png" alt="Welcome to Mail App" />
+        <img class="img-rounded" src="/images/flowcode-fav.png" alt="Welcome to Wing Demo" />
         <h3>Panel de Control</h3>
     </center>
 
