@@ -14,19 +14,19 @@ $app->set("dir", array(
     "log" => __DIR__ . "/log"
 ));
 $app->set("scanneableControllers", array(
-    "aire" => "\\flowcode\\aire\\controller\\"
+    "miweb" => "\\flowcode\\miweb\\controller\\"
 ));
-$app->set("defaultController", "\\flowcode\\aire\\controller\\PageController");
+$app->set("defaultController", "\\flowcode\\miweb\\controller\\PageController");
 $app->set("defaultMethod", "manage");
 $app->set("errorMethod", "errorMethod");
 
-$app->set("loginController", "\\flowcode\\aire\\controller\\AdminLoginController");
+$app->set("loginController", "\\flowcode\\miweb\\controller\\AdminLoginController");
 $app->set("loginMethod", "index");
 $app->set("restrictedMethod", "restricted");
 
 /** views layouts */
 $app->set("view", array(
-    "path" => __DIR__ . "/src/flowcode/aire/view",
+    "path" => __DIR__ . "/src/flowcode/miweb/view",
     "layout" => array(
         "frontend" => "frontend",
         "backend" => "backend",
