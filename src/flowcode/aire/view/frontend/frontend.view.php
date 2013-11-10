@@ -58,6 +58,7 @@
 
             </div>
         </div>
+        <hr/>
 
         <!-- Contenido  -->
         <div id="content" >
@@ -66,10 +67,11 @@
             </div>
         </div>
 
+        <hr/>
         <!--                  Aca va el contenido del footer  -->
         <div id="footer" class="footer">
             <div class="container">
-                <p class="powered">Powered by <span class="logo-small">Wing</span></p>
+                <h4>Footer</h4>
             </div>
         </div>
 

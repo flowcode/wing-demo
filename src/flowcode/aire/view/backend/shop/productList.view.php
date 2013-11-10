@@ -17,21 +17,19 @@
         window.location = url;
     }
     $(document).ready(function() {
-        /* search form */
-        $("#search").focus(function() {
-            $(this).keyup(function(e) {
-                if (e.keyCode === 13) {
-                    actualizarLista();
-                }
-            });
-        });
         $("#search").focus()
-        
     });
 </script>
+
+<ol class="breadcrumb">
+    <li><a href="/admin">Inicio</a></li>
+    <li class="active">Productos</li>
+</ol>
+
 <div class="page-header">
+
     <h1>Productos
-        <a class="btn btn-default" href="/adminProduct/create" ><i class="icon-plus icon-white"></i> Nuevo</a>
+        <a class="btn btn-default" href="/adminProduct/create" ><i class="glyphicon glyphicon-plus"></i> Nuevo</a>
     </h1>
 </div>
 
@@ -42,12 +40,12 @@
     <button type="submit"class="btn btn-default"><li class="glyphicon glyphicon-search"></li> Buscar</button>
 </form>
 
-<table class="table">
+<table class="table table-condensed">
     <thead>
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Description</th>
+            <th>#</th>
+            <th>Nombre</th>
+            <th>Descripción</th>
             <th>Status</th>            
             <th>Acciones</th>
         </tr>
@@ -58,10 +56,14 @@
                 <td><?php echo $entity->getId() ?></td>
                 <td><?php echo $entity->getName() ?></td>
                 <td><?php echo $entity->getDescription() ?></td>
-                <td><?php echo $entity->getStatus() ?></td>            
+                <?php if ($entity->getStatus() == "1"): ?>
+                    <td><span class="label label-success">activo</span></td>
+                <?php else: ?>
+                    <td><span class="label label-default">inactivo</span></td>
+                <?php endif; ?>
                 <td style="width: 100px;">
-                    <a href="/adminProduct/edit/<? echo $entity->getId() ?>" class="btn btn-default btn-sm" ><i class="glyphicon glyphicon-edit"></i></a>
-                    <a href="/adminProduct/delete/<? echo $entity->getId() ?>" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                    <a href="/adminProduct/edit/<? echo $entity->getId() ?>" class="btn btn-default btn-xs" ><i class="glyphicon glyphicon-edit"></i></a>
+                    <a href="/adminProduct/delete/<? echo $entity->getId() ?>" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
                 </td>
             </tr>
         <?php endforeach; ?>
@@ -69,7 +71,7 @@
 </table>
 
 <p class="pull-right">
-    Total de <?php echo $viewData["pager"]->getItemCount() ?> products.
+    Total de <?php echo $viewData["pager"]->getItemCount() ?> productos.
 </p>
 
 <input type="hidden" id="pagina-sel" value="" />

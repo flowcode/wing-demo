@@ -75,8 +75,8 @@ class PageService {
         return $this->pageDao->getByPermalink($permalink);
     }
 
-    public function getPagesByPermalinkAprox($permalink) {
-        return $this->pageDao->getBySimilarPermalink($permalink);
+    public function getPagesByPermalinkAprox($permalink, $exceptId = null) {
+        return $this->pageDao->getBySimilarPermalink($permalink, $exceptId);
     }
 
     public function delete(Page $page) {

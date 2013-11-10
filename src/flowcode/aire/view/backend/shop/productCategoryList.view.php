@@ -20,6 +20,12 @@
         $("#search").focus()
     });
 </script>
+
+<ol class="breadcrumb">
+    <li><a href="/admin">Inicio</a></li>
+    <li class="active">Categorías de productos</li>
+</ol>
+
 <div class="page-header">
     <h1>Categorias de Productos
         <a class="btn btn-default" href="/adminProductCategory/create"><i class="glyphicon glyphicon-plus"></i> Nuevo</a>

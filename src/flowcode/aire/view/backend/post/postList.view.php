@@ -29,6 +29,11 @@
     });
 </script>
 
+<ol class="breadcrumb">
+    <li><a href="/admin">Inicio</a></li>
+    <li class="active">Posts</li>
+</ol>
+
 <div class="page-header">
     <h1>Posts
         <a class="btn btn-default create" href="/adminBlog/createPost" ><i class="glyphicon glyphicon-plus glyphicon glyphicon-white"></i> Nuevo</a>

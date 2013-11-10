@@ -46,17 +46,17 @@ class AdminPageController extends BaseController {
         $viewData['action'] = "Nueva";
         return new View($viewData, "backend/cms/pageFormSimple");
     }
-    
+
     public function createList(HttpRequest $httpRequest) {
         $viewData['page'] = new Page();
         $viewData['action'] = "Nueva";
-        return new View($viewData, "backend/cms/pageForm");
+        return new View($viewData, "backend/cms/pageFormList");
     }
-    
+
     public function createGallery(HttpRequest $httpRequest) {
         $viewData['page'] = new Page();
         $viewData['action'] = "Nueva";
-        return new View($viewData, "backend/cms/pageForm");
+        return new View($viewData, "backend/cms/pageFormGallery");
     }
 
     public function save(HttpRequest $httpRequest) {
@@ -64,7 +64,7 @@ class AdminPageController extends BaseController {
         // obtengo los datos
         $id = (isset($_POST['id']) && !empty($_POST['id'])) ? $_POST['id'] : NULL;
         $name = $httpRequest->getParameter("name");
-        $permalink = $this->buildPermalink($name);
+        $permalink = $this->buildPermalink($name, $id);
 
         $page = new Page();
         $page->setId($id);
@@ -75,17 +75,28 @@ class AdminPageController extends BaseController {
         $page->setStatus($httpRequest->getParameter("status"));
         $page->setType($httpRequest->getParameter("type"));
 
-        // la guardo
-        $id = $this->pageSrv->savePage($page);
-
-        if (!empty($id)) {
+        if ($this->pageSrv->savePage($page)) {
             $viewData['message'] = new UserMessage("success", "Página creada con éxito.");
             $this->redirect("/adminPage/pages");
         } else {
             $viewData['action'] = "Editar";
             $viewData['page'] = $page;
-            $viewData['message'] = new UserMessage("danger", "Algo salió mal.");
-            return new View($viewData, "backend/cms/pageForm");
+            $viewData['message'] = new UserMessage("danger", "Disculpe, hubo un error en el sistema.");
+            switch ($page->getType()) {
+                case Page::$type_plain:
+                    return new View($viewData, "backend/cms/pageFormSimple");
+                    break;
+                case Page::$type_list:
+                    return new View($viewData, "backend/cms/pageFormList");
+                    break;
+                case Page::$type_gallery:
+                    return new View($viewData, "backend/cms/pageFormGallery");
+                    break;
+
+                default:
+                    return new View($viewData, "backend/cms/pageFormSimple");
+                    break;
+            }
         }
     }
 
@@ -110,14 +121,14 @@ class AdminPageController extends BaseController {
         $this->redirect("/adminPage/pages");
     }
 
-    private function buildPermalink($title) {
+    private function buildPermalink($title, $exceptId) {
 
         $permalinkBuilder = new PermalinkBuilder();
         $permalinkBuilder->setInputString($title);
         $permalinkBuilder->build();
         $permalink = $permalinkBuilder->getPermalink();
 
-        $pages = $this->pageSrv->getPagesByPermalinkAprox($permalink);
+        $pages = $this->pageSrv->getPagesByPermalinkAprox($permalink, $exceptId);
         $permalinkBuilder->setSimilarCount($pages->count());
         $permalinkBuilder->build();
         $permalink = $permalinkBuilder->getPermalink();

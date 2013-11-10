@@ -30,6 +30,12 @@
 
     });
 </script>
+
+<ol class="breadcrumb">
+    <li><a href="/admin">Inicio</a></li>
+    <li class="active">Tags</li>
+</ol>
+
 <div class="page-header">
     <h1>Tags
         <a class="btn btn-default create" href="/adminBlog/createTag"><i class="glyphicon glyphicon-plus"></i> Nuevo</a>

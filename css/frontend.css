@@ -13,8 +13,6 @@ root {
 #header{
     height: 180px;
     padding: 50px 20px;
-    border-bottom: 1px solid #ddd;
-    background-color: whitesmoke;
 }
 #content{
     padding: 20px;
@@ -24,9 +22,7 @@ root {
 #footer{
     padding: 20px;
     width: 100%;
-    border-top: 1px solid #ddd;
-    min-height: 150px;
-    background-color: #333;
+    height: 150px;
 }
 
 .title{

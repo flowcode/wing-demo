@@ -8,7 +8,7 @@
         <!-- Carousel items -->
 
         <div class="carousel-inner">
-            <div class="active item"><img src="/uploads/files/perrito.jpg" />
+            <div class="active item"><img src="/uploads/files/slide1.jpg" />
                 <div class="carousel-caption">
                     <h4>Primer Slide</h4>
 
@@ -16,7 +16,7 @@
                 </div>
             </div>
 
-            <div class="item"><img src="/uploads/files/slide1.jpg" />
+            <div class="item"><img src="/uploads/files/perrito.jpg" />
                 <div class="carousel-caption">
                     <h4>Segundo Slide</h4>
 

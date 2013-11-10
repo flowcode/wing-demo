@@ -19,6 +19,12 @@
         $("#selectpage").modal();
     }
 </script>
+
+<ol class="breadcrumb">
+    <li><a href="/admin">Inicio</a></li>
+    <li class="active">Páginas</li>
+</ol>
+
 <div class="page-header">
     <h1>Paginas
         <a class="btn btn-default create" onclick="createPage();"><li class="glyphicon glyphicon-plus "></li> Nueva</a>

@@ -62,10 +62,15 @@ class PageDao {
      * @param String $permalink
      * @return array
      */
-    function getBySimilarPermalink($permalink) {
+    function getBySimilarPermalink($permalink, $exceptId = null) {
 
         $em = EntityManager::getInstance();
-        $pages = $em->findByWhereFilter("page", "permalink LIKE '$permalink%' ");
+        if(!is_null($exceptId)){
+            $filter = "permalink LIKE '$permalink%' AND id != '$exceptId' ";
+        }  else {
+            $filter = "permalink LIKE '$permalink%' ";
+        }
+        $pages = $em->findByWhereFilter("page", $filter);
 
         return $pages;
     }
